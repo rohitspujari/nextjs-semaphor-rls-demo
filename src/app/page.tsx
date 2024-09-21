@@ -13,9 +13,11 @@ export default async function HomePage({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
+  // extract tenant from search parameter
   const tenant = searchParams.tenant as string | undefined;
-  let states: string[] = [];
 
+  // select states based on the tenant
+  let states: string[] = [];
   switch (tenant) {
     case 'a':
       states = ['New York', 'Connecticut', 'Florida'];
@@ -31,6 +33,7 @@ export default async function HomePage({
       break;
   }
 
+  // create row-level policy with above states
   const rowPolicy = {
     name: 'states',
     params: {
@@ -38,6 +41,7 @@ export default async function HomePage({
     },
   };
 
+  // generate auth token with the policy
   const token = await postRequest<AuthToken>(TOKEN_URL, {
     dashboardId: DASHBOARD_ID,
     dashboardSecret: DASHBOARD_SECRET,
